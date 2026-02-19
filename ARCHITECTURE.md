@@ -68,7 +68,7 @@ Migrations handle one-time transitions that are not naturally idempotent: removi
 
 Inspired by [Omarchy's migration system](https://github.com/basecamp/omarchy/blob/dev/bin/omarchy-migrate).
 
-- Migration scripts live in `migrations/` and are named with a Unix timestamp: `1740000000.sh`
+- Migration scripts live in `migrations/` and are named `<timestamp>_<description>.sh`: e.g. `1740000000_remove_deprecated_tool.sh`
 - State is tracked in `~/.local/state/trusted/devsetup/migrations/` as empty marker files (one per completed migration)
 - On each run of `setup.sh`, the migration runner:
   1. Scans `migrations/*.sh` sorted numerically
@@ -83,9 +83,9 @@ Inspired by [Omarchy's migration system](https://github.com/basecamp/omarchy/blo
 
 ```bash
 # Generate a migration file named with the current Unix timestamp
-date +%s  # e.g., 1740000000
-touch migrations/1740000000.sh
-chmod +x migrations/1740000000.sh
+timestamp=$(date +%s)
+touch "migrations/${timestamp}_short_description.sh"
+chmod +x "migrations/${timestamp}_short_description.sh"
 ```
 
 ### Re-running a migration
@@ -147,11 +147,10 @@ devsetup/
 │   └── migrate.sh        # Migration runner (sourced by setup.sh)
 ├── migrations/           # Run-once transition scripts
 │   └── .gitkeep
-├── test/
-│   └── setup_test.bats   # Post-setup verification tests (bats-core)
+├── doctor.sh             # Read-only diagnostic script (verifies setup.sh outcomes)
 ├── .github/
 │   └── workflows/
-│       └── ci.yml        # GitHub Actions: shellcheck + Ubuntu setup + tests
+│       └── ci.yml        # GitHub Actions: shellcheck + Ubuntu setup + doctor
 ├── ARCHITECTURE.md       # This file
 ├── README.md             # Brief usage instructions
 ├── AGENTS.md             # Guidelines for AI agents modifying this repo

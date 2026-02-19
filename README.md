@@ -54,6 +54,14 @@ To re-run a specific migration:
 - Ubuntu / Debian (apt)
 - Omarchy (pacman/yay)
 
+## Diagnosing your environment
+
+Run `doctor.sh` at any time to check that all expected tools are installed and no migrations are pending. It never changes anything — only reports:
+
+```bash
+bash doctor.sh
+```
+
 ## How it works
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for the full design document.

@@ -117,26 +117,26 @@ echo ""
 echo "  Platform: $OS"
 echo ""
 
-# shellcheck source=lib/setup_packages.sh
-source "$SCRIPT_DIR/lib/setup_packages.sh"
+# shellcheck source=lib/packages_setup.sh
+source "$SCRIPT_DIR/lib/packages_setup.sh"
 
-# shellcheck source=lib/setup_git.sh
-source "$SCRIPT_DIR/lib/setup_git.sh"
+# shellcheck source=lib/git_setup.sh
+source "$SCRIPT_DIR/lib/git_setup.sh"
 
-# shellcheck source=lib/setup_mise.sh
-source "$SCRIPT_DIR/lib/setup_mise.sh"
+# shellcheck source=lib/mise_setup.sh
+source "$SCRIPT_DIR/lib/mise_setup.sh"
 
-# shellcheck source=lib/setup_1password.sh
-source "$SCRIPT_DIR/lib/setup_1password.sh"
+# shellcheck source=lib/1password_setup.sh
+source "$SCRIPT_DIR/lib/1password_setup.sh"
 
-# shellcheck source=lib/setup_build.sh
-source "$SCRIPT_DIR/lib/setup_build.sh"
+# shellcheck source=lib/build_setup.sh
+source "$SCRIPT_DIR/lib/build_setup.sh"
 
-# shellcheck source=lib/setup_docker.sh
-source "$SCRIPT_DIR/lib/setup_docker.sh"
+# shellcheck source=lib/docker_setup.sh
+source "$SCRIPT_DIR/lib/docker_setup.sh"
 
-# shellcheck source=lib/setup_aws.sh
-source "$SCRIPT_DIR/lib/setup_aws.sh"
+# shellcheck source=lib/aws_setup.sh
+source "$SCRIPT_DIR/lib/aws_setup.sh"
 
 # ---------------------------------------------------------------------------
 # Migrations
@@ -150,8 +150,8 @@ run_migrations "$SCRIPT_DIR"
 # Repositories
 # ---------------------------------------------------------------------------
 
-# shellcheck source=lib/setup_repos.sh
-source "$SCRIPT_DIR/lib/setup_repos.sh"
+# shellcheck source=lib/repos_setup.sh
+source "$SCRIPT_DIR/lib/repos_setup.sh"
 
 # ---------------------------------------------------------------------------
 # Done

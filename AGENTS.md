@@ -28,7 +28,7 @@ This repo contains a bash bootstrap script that prepares developer machines with
 
 - Migrations are for **one-time transitions** that are not naturally idempotent: removing deprecated tools, renaming config files, changing state directory structure, etc.
 - Do NOT put idempotent "ensure X is installed" logic in migrations. That belongs in the base setup section of `setup.sh`.
-- Migration filenames are Unix timestamps: `<timestamp>.sh`. Generate with `date +%s`.
+- Migration filenames are `<timestamp>_<description>.sh` — a Unix timestamp followed by a short snake_case description. Example: `1740000000_remove_deprecated_tool.sh`. Generate the timestamp with `date +%s`.
 - **Migrations are immutable once merged.** Never edit a shipped migration. Ship a corrective migration instead.
 - Each migration must be **self-contained and defensive** — check preconditions, don't assume prior state.
 - Migrations must work on all supported platforms (macOS, Ubuntu, Arch) or explicitly check the OS and skip gracefully.
@@ -71,20 +71,20 @@ It does **NOT** install:
 - If a migration fails, the runner stops. It does not skip or continue.
 - Provide clear error messages with actionable next steps.
 
-### Testing
+### Verification (doctor.sh)
 
+- `doctor.sh` is a read-only diagnostic script that verifies all tools installed by `setup.sh` are present and working. It never modifies anything.
 - CI runs on every PR via GitHub Actions (`.github/workflows/ci.yml`).
-- **Shellcheck** lints all bash scripts.
-- **Setup (Ubuntu)** runs `setup.sh` end-to-end on an Ubuntu runner, then runs `bats` post-setup tests.
-- Post-setup tests live in `test/setup_test.bats` (uses [bats-core](https://github.com/bats-core/bats-core)).
-- When adding a new tool to `setup.sh`, add a corresponding test in `test/setup_test.bats`.
+- **Shellcheck** lints all bash scripts (including `doctor.sh`).
+- **Setup (Ubuntu)** runs `setup.sh` end-to-end on an Ubuntu runner, then runs `doctor.sh` to verify.
+- When adding a new tool to `setup.sh`, add a corresponding check in `doctor.sh`.
 - Before merging changes, verify the script runs cleanly on at least macOS (the primary dev platform).
 
 ## Commands
 
-- `shellcheck -x setup.sh lib/migrate.sh` — Lint bash scripts
+- `shellcheck -x setup.sh doctor.sh lib/migrate.sh` — Lint bash scripts
 - `bash -n setup.sh` — Check for syntax errors without executing
-- `bats test/setup_test.bats` — Run post-setup verification tests
+- `bash doctor.sh` — Run post-setup diagnostic checks
 - `date +%s` — Generate a migration timestamp
 
 ## Code style

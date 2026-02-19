@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run shellcheck
-        run: shellcheck -x setup.sh lib/*.sh
+        run: shellcheck -x setup.sh doctor.sh lib/*.sh
 
   setup-ubuntu:
     name: Setup (Ubuntu)
@@ -27,13 +27,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_GITHUB_TOKEN }}
 
-      - name: Install bats
-        run: sudo apt-get install -y -qq bats
-
-      - name: Run post-setup tests
+      - name: Run doctor
         run: |
           export PATH="$HOME/.local/bin:$PATH"
           eval "$(mise activate bash)"
-          bats test/setup_test.bats
+          bash doctor.sh
         env:
           GH_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_GITHUB_TOKEN }}

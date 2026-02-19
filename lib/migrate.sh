@@ -67,27 +67,37 @@ rerun_migration() {
   local script_dir="$1"
   local timestamp="$2"
   local migrations_dir="$script_dir/migrations"
-  local filename="${timestamp}.sh"
-  local filepath="$migrations_dir/$filename"
 
   mkdir -p "$MIGRATION_STATE_DIR"
 
-  if [ ! -f "$filepath" ]; then
-    echo "ERROR: Migration file not found: $filepath"
+  # Find the migration file by timestamp prefix (supports <timestamp>_<name>.sh)
+  local filepath=""
+  for candidate in "$migrations_dir/${timestamp}"*.sh; do
+    if [ -f "$candidate" ]; then
+      filepath="$candidate"
+      break
+    fi
+  done
+
+  if [ -z "$filepath" ]; then
+    echo "ERROR: No migration file found matching timestamp: $timestamp"
     return 1
   fi
+
+  local filename
+  filename="$(basename "$filepath")"
 
   # Remove the marker file if it exists
   rm -f "$MIGRATION_STATE_DIR/$filename"
 
-  echo "-> Re-running migration $timestamp ..."
+  echo "-> Re-running migration ${filename%.sh} ..."
 
   if bash "$filepath"; then
     touch "$MIGRATION_STATE_DIR/$filename"
-    echo "   Migration $timestamp completed."
+    echo "   Migration ${filename%.sh} completed."
   else
     echo ""
-    echo "ERROR: Migration $timestamp failed."
+    echo "ERROR: Migration ${filename%.sh} failed."
     return 1
   fi
 }
