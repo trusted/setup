@@ -430,9 +430,7 @@ clone_to_work() {
     fmt_ok "$name already at $dir"
   elif gh auth status > /dev/null 2>&1; then
     fmt_install "Cloning $name to $dir"
-    gh repo clone "$repo" "$dir" -- --quiet || echo "  WARNING: Failed to clone $name. You may not have access."
-  else
-    echo "  Skipping $name clone (gh not authenticated)."
+    gh repo clone "$repo" "$dir" -- --quiet
   fi
 }
 
