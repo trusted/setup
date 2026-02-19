@@ -107,3 +107,7 @@
 @test "~/Work/devsetup contains setup.sh" {
   [ -f "$HOME/Work/devsetup/setup.sh" ]
 }
+
+@test "docs is cloned to ~/Work/docs" {
+  [ -d "$HOME/Work/docs/.git" ]
+}
