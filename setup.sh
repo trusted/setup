@@ -411,6 +411,27 @@ fmt_header "Migrations"
 run_migrations "$SCRIPT_DIR"
 
 # ---------------------------------------------------------------------------
+# Work directory
+# ---------------------------------------------------------------------------
+
+WORK_DIR="$HOME/Work"
+DEVSETUP_DIR="$WORK_DIR/devsetup"
+
+fmt_header "Work Directory"
+
+mkdir -p "$WORK_DIR"
+fmt_ok "$WORK_DIR ready"
+
+if [ -d "$DEVSETUP_DIR/.git" ]; then
+  fmt_ok "devsetup already at $DEVSETUP_DIR"
+elif gh auth status > /dev/null 2>&1; then
+  fmt_install "Cloning devsetup to $DEVSETUP_DIR"
+  gh repo clone "${DEVSETUP_REPO:-trusted/devsetup}" "$DEVSETUP_DIR" -- --quiet
+else
+  echo "  Skipping devsetup clone (gh not authenticated)."
+fi
+
+# ---------------------------------------------------------------------------
 # Done
 # ---------------------------------------------------------------------------
 
@@ -419,6 +440,6 @@ echo "= Trusted Dev Setup Complete ="
 echo ""
 echo "Next steps:"
 echo "  1. Open a new terminal (or run: source ~/.zshrc)"
-echo "  2. Clone a project:  gh repo clone trusted/<repo-name>"
+echo "  2. Clone a project:  cd ~/Work && gh repo clone trusted/<repo-name>"
 echo "  3. Run project setup: cd <repo-name> && bin/setup"
 echo ""
