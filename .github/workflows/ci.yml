@@ -26,7 +26,6 @@ jobs:
         run: bash setup.sh
         env:
           CI: "true"
-          GH_TOKEN: ${{ github.token }}
 
       - name: Install bats
         run: sudo apt-get install -y -qq bats
@@ -36,5 +35,3 @@ jobs:
           export PATH="$HOME/.local/bin:$PATH"
           eval "$(mise activate bash)"
           bats test/setup_test.bats
-        env:
-          GH_TOKEN: ${{ github.token }}

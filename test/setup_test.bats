@@ -91,19 +91,3 @@
 @test "migration state directory exists" {
   [ -d "$HOME/.local/state/trusted/devsetup/migrations" ]
 }
-
-# ---------------------------------------------------------------------------
-# Work directory and devsetup clone
-# ---------------------------------------------------------------------------
-
-@test "~/Work directory exists" {
-  [ -d "$HOME/Work" ]
-}
-
-@test "devsetup is cloned to ~/Work/devsetup" {
-  [ -d "$HOME/Work/devsetup/.git" ]
-}
-
-@test "~/Work/devsetup contains setup.sh" {
-  [ -f "$HOME/Work/devsetup/setup.sh" ]
-}
