@@ -257,6 +257,37 @@ else
 fi
 
 # ---------------------------------------------------------------------------
+# Work directory and devsetup clone
+# ---------------------------------------------------------------------------
+
+WORK_DIR="$HOME/Work"
+DEVSETUP_DIR="$WORK_DIR/devsetup"
+DEVSETUP_REPO="${DEVSETUP_REPO:-trusted/devsetup}"
+
+fmt_header "Work Directory"
+
+if [ -d "$WORK_DIR" ]; then
+  fmt_ok "$WORK_DIR already exists"
+else
+  fmt_install "Creating $WORK_DIR"
+  mkdir -p "$WORK_DIR"
+fi
+
+fmt_header "Clone devsetup"
+
+if [ -d "$DEVSETUP_DIR/.git" ]; then
+  fmt_ok "devsetup already cloned at $DEVSETUP_DIR"
+  git -C "$DEVSETUP_DIR" pull --quiet 2>/dev/null || true
+else
+  fmt_install "Cloning $DEVSETUP_REPO to $DEVSETUP_DIR"
+  gh repo clone "$DEVSETUP_REPO" "$DEVSETUP_DIR" -- --quiet
+fi
+
+# If we were running from the temp bootstrap location, switch SCRIPT_DIR
+# to the canonical ~/Work/devsetup so migrations use the right path.
+SCRIPT_DIR="$DEVSETUP_DIR"
+
+# ---------------------------------------------------------------------------
 # mise (version manager)
 # ---------------------------------------------------------------------------
 
@@ -419,6 +450,9 @@ echo "= Trusted Dev Setup Complete ="
 echo ""
 echo "Next steps:"
 echo "  1. Open a new terminal (or run: source ~/.zshrc)"
-echo "  2. Clone a project:  gh repo clone trusted/<repo-name>"
+echo "  2. Clone a project:  cd ~/Work && gh repo clone trusted/<repo-name>"
 echo "  3. Run project setup: cd <repo-name> && bin/setup"
+echo ""
+echo "To re-run this setup later:"
+echo "  ~/Work/devsetup/setup.sh"
 echo ""
