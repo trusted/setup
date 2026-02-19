@@ -11,6 +11,11 @@ Bootstraps a developer machine with the baseline tools required to work on Trust
 - **Ruby** — latest stable via mise (global default for `bin/setup` scripts)
 - **op** — 1Password CLI for secrets management
 - **Build essentials** — compilers and headers for native extensions
+- **Docker** — container runtime
+- **Docker Compose** — multi-container orchestration
+- **Colima** — container runtime for macOS (macOS only)
+- **AWS CLI** — Amazon Web Services CLI (no auth configured)
+- **AWS VPN Client** — VPN client for AWS (macOS and Ubuntu)
 
 ## Quick start
 

@@ -42,12 +42,19 @@ The bootstrap installs the following, in order:
 5. **mise**: Version manager for Ruby, Node, and other runtimes
 6. **ruby** (latest stable, via mise): Global default so `bin/setup` scripts work
 7. **op**: 1Password CLI for secrets management
+8. **Build essentials**: Compilers and headers for native extensions
+9. **Docker**: Container runtime (Docker Engine on Linux, Docker CLI on macOS)
+10. **Docker Compose**: Multi-container orchestration (`docker compose`)
+11. **Colima**: Container runtime for macOS (macOS only)
+12. **AWS CLI**: Amazon Web Services command-line interface (no auth configured)
+13. **AWS VPN Client**: VPN client for AWS Client VPN (macOS and Ubuntu only)
 
 ### What is NOT installed
 
 - Node.js (left to individual projects via mise)
-- Project-specific Ruby versions (handled by mise + `mise.toml` per project)
+- Project-specific Ruby versions (handled by mise + `.mise.toml` per project)
 - Any project dependencies (gems, npm packages, databases)
+- AWS credentials or VPN profiles (configured separately)
 
 ## Idempotency
 

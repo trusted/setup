@@ -47,20 +47,23 @@ When adding a new tool installation, provide install commands for all three plat
 
 ### Scope boundaries
 
-This repo installs **tool managers and CLI tools only**:
+This repo installs **tool managers, CLI tools, and infrastructure dependencies**:
 
 - Package managers (Homebrew, apt, pacman)
 - git, gh, mise, op
 - Ruby (latest stable via mise, as global default for `bin/setup` scripts)
 - Build essentials
+- Docker, Docker Compose, Colima (macOS only)
+- AWS CLI, AWS VPN Client
 
 It does **NOT** install:
 
 - Node.js, Python, or other runtimes (left to project `bin/setup` via mise)
 - Project-specific Ruby versions (handled by mise + `.mise.toml`)
 - Application dependencies (gems, npm packages)
-- Databases, Docker, Redis, Elasticsearch, etc.
+- Databases, Redis, Elasticsearch, etc.
 - Editor configurations or dotfiles
+- AWS credentials or VPN profiles
 
 ### Error handling
 
