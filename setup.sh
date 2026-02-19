@@ -129,6 +129,9 @@ source "$SCRIPT_DIR/lib/mise_setup.sh"
 # shellcheck source=lib/1password_setup.sh
 source "$SCRIPT_DIR/lib/1password_setup.sh"
 
+# shellcheck source=lib/circleci_setup.sh
+source "$SCRIPT_DIR/lib/circleci_setup.sh"
+
 # shellcheck source=lib/build_setup.sh
 source "$SCRIPT_DIR/lib/build_setup.sh"
 
@@ -137,6 +140,9 @@ source "$SCRIPT_DIR/lib/docker_setup.sh"
 
 # shellcheck source=lib/aws_setup.sh
 source "$SCRIPT_DIR/lib/aws_setup.sh"
+
+# shellcheck source=lib/registries_setup.sh
+source "$SCRIPT_DIR/lib/registries_setup.sh"
 
 # ---------------------------------------------------------------------------
 # Migrations

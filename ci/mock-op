@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# Mock 1Password CLI for CI environments.
+#
+# Returns hardcoded dummy values so setup.sh code paths execute without
+# a real 1Password desktop app or service account. Placed on PATH before
+# the real op binary (or in place of it when op is not installed).
+
+case "$*" in
+  *whoami*)
+    echo "ci-mock-user@trusted.dev"
+    ;;
+  *BUNDLE_ENTERPRISE__CONTRIBSYS__COM*)
+    echo "ci-mock-contribsys-key"
+    ;;
+  *"Font Awesome"*)
+    echo "ci-mock-fa-token"
+    ;;
+  *--version)
+    echo "2.99.0-mock"
+    ;;
+  *signin*)
+    # No-op: mock is already "signed in"
+    ;;
+  *)
+    echo "ci-mock-op: unhandled args: $*" >&2
+    exit 1
+    ;;
+esac

@@ -84,6 +84,9 @@ source "$SCRIPT_DIR/lib/mise_doctor.sh"
 # shellcheck source=lib/1password_doctor.sh
 source "$SCRIPT_DIR/lib/1password_doctor.sh"
 
+# shellcheck source=lib/circleci_doctor.sh
+source "$SCRIPT_DIR/lib/circleci_doctor.sh"
+
 # shellcheck source=lib/build_doctor.sh
 source "$SCRIPT_DIR/lib/build_doctor.sh"
 
@@ -92,6 +95,9 @@ source "$SCRIPT_DIR/lib/docker_doctor.sh"
 
 # shellcheck source=lib/aws_doctor.sh
 source "$SCRIPT_DIR/lib/aws_doctor.sh"
+
+# shellcheck source=lib/registries_doctor.sh
+source "$SCRIPT_DIR/lib/registries_doctor.sh"
 
 # shellcheck source=lib/migrate_doctor.sh
 source "$SCRIPT_DIR/lib/migrate_doctor.sh"

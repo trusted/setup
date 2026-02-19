@@ -50,16 +50,19 @@ When adding a new tool installation, provide install commands for all three plat
 This repo installs **tool managers, CLI tools, and infrastructure dependencies**:
 
 - Package managers (Homebrew, apt, pacman)
-- git, gh, mise, op
+- git, gh, mise, op, circleci
 - Ruby (latest stable via mise, as global default for `bin/setup` scripts)
+- Node.js (latest LTS via mise, as global default)
+- Yarn (via corepack, ships with Node.js)
 - Build essentials
 - Docker, Docker Compose, Colima (macOS only)
 - AWS CLI, AWS VPN Client
+- Private registry configuration (Bundler for gems, Yarn for npm scopes)
 
 It does **NOT** install:
 
-- Node.js, Python, or other runtimes (left to project `bin/setup` via mise)
-- Project-specific Ruby versions (handled by mise + `.mise.toml`)
+- Python or other runtimes (left to project `bin/setup` via mise)
+- Project-specific Ruby or Node.js versions (handled by mise + `.mise.toml`)
 - Application dependencies (gems, npm packages)
 - Databases, Redis, Elasticsearch, etc.
 - Editor configurations or dotfiles
@@ -82,7 +85,7 @@ It does **NOT** install:
 
 ## Commands
 
-- `shellcheck -x setup.sh doctor.sh lib/*.sh` — Lint bash scripts
+- `shellcheck -x setup.sh doctor.sh lib/*.sh ci/mock-op` — Lint bash scripts
 - `bash -n setup.sh` — Check for syntax errors without executing
 - `bash doctor.sh` — Run post-setup diagnostic checks
 - `date +%s` — Generate a migration timestamp

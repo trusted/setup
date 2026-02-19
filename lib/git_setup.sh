@@ -56,18 +56,38 @@ fi
 
 fmt_header "GitHub Authentication"
 
+gh_auth_ok=false
+gh_scopes_ok=false
+
 if gh auth status > /dev/null 2>&1; then
-  fmt_ok "Already authenticated with GitHub"
-elif [ "${CI:-}" = "true" ]; then
+  gh_auth_ok=true
+  # Check for required scopes (read:packages needed for private registries)
+  gh_status_output="$(gh auth status 2>&1)"
+  if echo "$gh_status_output" | grep -qE 'read:packages|write:packages'; then
+    gh_scopes_ok=true
+  fi
+fi
+
+if $gh_auth_ok && $gh_scopes_ok; then
+  fmt_ok "Authenticated with GitHub (with required scopes)"
+elif $gh_auth_ok; then
+  echo "  GitHub CLI is authenticated but missing required scopes (read:packages, write:packages)."
+  echo "  Re-authenticating with required scopes..."
   echo ""
-  echo "ERROR: Not authenticated with GitHub in CI."
-  echo "Set GH_TOKEN or GITHUB_TOKEN in your workflow environment."
-  exit 1
+  gh auth login --web --git-protocol https --scopes read:packages,write:packages
+
+  if ! gh auth status > /dev/null 2>&1; then
+    echo ""
+    echo "ERROR: GitHub re-authentication failed or was cancelled."
+    echo "Setup cannot continue without GitHub access."
+    exit 1
+  fi
+  fmt_ok "Authenticated with GitHub (scopes updated)"
 else
   echo "  GitHub CLI needs to be authenticated."
   echo "  This will open a browser window for GitHub login."
   echo ""
-  gh auth login --web --git-protocol https
+  gh auth login --web --git-protocol https --scopes read:packages,write:packages
 
   # Verify authentication succeeded before continuing
   if ! gh auth status > /dev/null 2>&1; then

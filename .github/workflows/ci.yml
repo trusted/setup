@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Run shellcheck
-        run: shellcheck -x setup.sh doctor.sh lib/*.sh
+        run: shellcheck -x setup.sh doctor.sh lib/*.sh ci/mock-op
 
   setup-ubuntu:
     name: Setup (Ubuntu)
@@ -22,10 +22,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install op mock for CI
+        run: |
+          sudo cp ci/mock-op /usr/local/bin/op
+          sudo chmod +x /usr/local/bin/op
+
       - name: Run setup.sh
         run: bash setup.sh
         env:
           GH_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_GITHUB_TOKEN }}
+          CIRCLECI_CLI_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_CIRCLECI_TOKEN }}
 
       - name: Run doctor
         run: |
@@ -34,3 +40,4 @@ jobs:
           bash doctor.sh
         env:
           GH_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_GITHUB_TOKEN }}
+          CIRCLECI_CLI_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_CIRCLECI_TOKEN }}

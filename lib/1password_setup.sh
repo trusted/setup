@@ -42,3 +42,26 @@ else
       ;;
   esac
 fi
+
+# ---------------------------------------------------------------------------
+# 1Password Authentication
+# ---------------------------------------------------------------------------
+
+fmt_header "1Password Authentication"
+
+if op whoami > /dev/null 2>&1; then
+  fmt_ok "1Password: already signed in"
+else
+  echo "  1Password CLI needs to be authenticated."
+  echo "  This will open a browser/system auth prompt."
+  echo ""
+  eval "$(op signin)"
+
+  if ! op whoami > /dev/null 2>&1; then
+    echo ""
+    echo "ERROR: 1Password authentication failed or was cancelled."
+    echo "Setup cannot continue without 1Password access."
+    exit 1
+  fi
+  fmt_ok "1Password: signed in"
+fi
