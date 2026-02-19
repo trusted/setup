@@ -1,0 +1,93 @@
+#!/bin/bash
+#
+# Migration runner for Trusted Dev Setup.
+# Sourced by setup.sh — do not execute directly.
+#
+# Inspired by Omarchy's migration system:
+# https://github.com/basecamp/omarchy/blob/dev/bin/omarchy-migrate
+
+MIGRATION_STATE_DIR="$HOME/.local/state/trusted/devsetup/migrations"
+
+run_migrations() {
+  local script_dir="$1"
+  local migrations_dir="$script_dir/migrations"
+
+  mkdir -p "$MIGRATION_STATE_DIR"
+
+  # Check if there are any migration files
+  local has_migrations=false
+  for file in "$migrations_dir"/*.sh; do
+    [ -f "$file" ] && has_migrations=true && break
+  done
+
+  if [ "$has_migrations" = false ]; then
+    echo "No migrations found."
+    return 0
+  fi
+
+  local pending=0
+  local applied=0
+
+  for file in "$migrations_dir"/*.sh; do
+    [ -f "$file" ] || continue
+
+    local filename
+    filename=$(basename "$file")
+    local timestamp="${filename%.sh}"
+
+    if [ -f "$MIGRATION_STATE_DIR/$filename" ]; then
+      applied=$((applied + 1))
+      continue
+    fi
+
+    pending=$((pending + 1))
+
+    echo "-> Running migration $timestamp ..."
+
+    if bash "$file"; then
+      touch "$MIGRATION_STATE_DIR/$filename"
+      echo "   Migration $timestamp completed."
+    else
+      echo ""
+      echo "ERROR: Migration $timestamp failed."
+      echo "Fix the issue and re-run setup.sh."
+      echo "To retry just this migration: setup.sh --rerun $timestamp"
+      return 1
+    fi
+  done
+
+  if [ "$pending" -eq 0 ]; then
+    echo "All migrations already applied ($applied total)."
+  else
+    echo "Applied $pending new migration(s) ($((applied + pending)) total)."
+  fi
+}
+
+rerun_migration() {
+  local script_dir="$1"
+  local timestamp="$2"
+  local migrations_dir="$script_dir/migrations"
+  local filename="${timestamp}.sh"
+  local filepath="$migrations_dir/$filename"
+
+  mkdir -p "$MIGRATION_STATE_DIR"
+
+  if [ ! -f "$filepath" ]; then
+    echo "ERROR: Migration file not found: $filepath"
+    return 1
+  fi
+
+  # Remove the marker file if it exists
+  rm -f "$MIGRATION_STATE_DIR/$filename"
+
+  echo "-> Re-running migration $timestamp ..."
+
+  if bash "$filepath"; then
+    touch "$MIGRATION_STATE_DIR/$filename"
+    echo "   Migration $timestamp completed."
+  else
+    echo ""
+    echo "ERROR: Migration $timestamp failed."
+    return 1
+  fi
+}
