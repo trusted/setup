@@ -25,7 +25,6 @@ jobs:
       - name: Run setup.sh
         run: bash setup.sh
         env:
-          CI: "true"
           GH_TOKEN: ${{ secrets.TRUSTED_SHARED_SOURCE_GITHUB_TOKEN }}
 
       - name: Install bats
