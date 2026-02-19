@@ -31,22 +31,30 @@ source "$SCRIPT_DIR/lib/common.sh"
 # Doctor helpers
 # ---------------------------------------------------------------------------
 
+# COLOR_GREEN, COLOR_YELLOW, and COLOR_RESET are provided by common.sh.
+# Doctor additionally needs red for failures.
+if [ -t 1 ]; then
+  COLOR_RED=$'\033[31m'
+else
+  COLOR_RED=""
+fi
+
 FAIL_COUNT=0
 PASS_COUNT=0
 WARN_COUNT=0
 
 check_pass() {
-  echo "  [ok] $1"
+  echo "  ${COLOR_GREEN}[ok]${COLOR_RESET} $1"
   PASS_COUNT=$((PASS_COUNT + 1))
 }
 
 check_fail() {
-  echo "  [FAIL] $1"
+  echo "  ${COLOR_RED}[FAIL]${COLOR_RESET} $1"
   FAIL_COUNT=$((FAIL_COUNT + 1))
 }
 
 check_warn() {
-  echo "  [warn] $1"
+  echo "  ${COLOR_YELLOW}[warn]${COLOR_RESET} $1"
   WARN_COUNT=$((WARN_COUNT + 1))
 }
 
@@ -118,12 +126,12 @@ echo "  Warnings: $WARN_COUNT"
 echo ""
 
 if [ "$FAIL_COUNT" -gt 0 ]; then
-  echo "Some checks failed. Run setup.sh to fix them:"
+  echo "${COLOR_RED}Some checks failed.${COLOR_RESET} Run setup.sh to fix them:"
   echo "  bash setup.sh"
   echo ""
   exit 1
 else
-  echo "All checks passed. Your environment is healthy."
+  echo "${COLOR_GREEN}All checks passed.${COLOR_RESET} Your environment is healthy."
   echo ""
   exit 0
 fi

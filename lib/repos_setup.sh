@@ -24,4 +24,5 @@ clone_to_work() {
   fi
 }
 
+clone_to_work "trusted/devsetup" "devsetup"
 clone_to_work "trusted/docs" "docs"

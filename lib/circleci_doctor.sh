@@ -12,7 +12,8 @@ if cmd_exists circleci; then
   version_output="$(circleci version 2>&1 | head -1)"
   check_pass "circleci reports version: $version_output"
 
-  if circleci diagnostic 2>&1 | grep -q "OK, got a token"; then
+  circleci_diag="$(circleci diagnostic 2>&1 || true)"
+  if echo "$circleci_diag" | grep -q "OK, got a token"; then
     check_pass "circleci is authenticated"
   else
     check_fail "circleci is not authenticated (run: circleci setup)"

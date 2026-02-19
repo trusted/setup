@@ -78,16 +78,15 @@ fi
 
 fmt_header "Node.js (via mise)"
 
-if mise which node > /dev/null 2>&1; then
-  fmt_ok "Node.js already available via mise"
-else
-  fmt_install "Node.js (latest LTS via mise)"
-  mise use --global node@lts
-  fmt_ok "Node.js installed: $(mise exec -- node --version)"
-fi
+# Always ensure the global default is LTS. A previous run or manual config
+# may have set it to "latest" (e.g. v25+), which drops corepack and breaks
+# yarn. This is idempotent — mise is a no-op if already set to lts.
+fmt_install "Ensuring Node.js global default is LTS"
+mise use --global node@lts
+fmt_ok "Node.js LTS active: $(mise exec -- node --version)"
 
 # ---------------------------------------------------------------------------
-# Yarn (via corepack — ships with Node.js)
+# Yarn (via corepack — ships with Node.js LTS)
 # ---------------------------------------------------------------------------
 
 fmt_header "Yarn (via corepack)"

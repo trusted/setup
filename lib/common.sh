@@ -7,17 +7,28 @@
 # Output formatting
 # ---------------------------------------------------------------------------
 
+# Colors (disabled when output is not a terminal)
+if [ -t 1 ]; then
+  COLOR_GREEN=$'\033[32m'
+  COLOR_YELLOW=$'\033[33m'
+  COLOR_RESET=$'\033[0m'
+else
+  COLOR_GREEN=""
+  COLOR_YELLOW=""
+  COLOR_RESET=""
+fi
+
 fmt_header() {
   echo ""
   echo "== $1 =="
 }
 
 fmt_ok() {
-  echo "  [ok] $1"
+  echo "  ${COLOR_GREEN}[ok]${COLOR_RESET} $1"
 }
 
 fmt_install() {
-  echo "  [install] $1"
+  echo "  ${COLOR_YELLOW}[install]${COLOR_RESET} $1"
 }
 
 # ---------------------------------------------------------------------------

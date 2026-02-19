@@ -64,6 +64,16 @@ source "$SCRIPT_DIR/lib/common.sh"
 # shellcheck source=lib/migrate.sh
 source "$SCRIPT_DIR/lib/migrate.sh"
 
+# Red is only needed for the failure trap; green/yellow come from common.sh.
+if [ -t 1 ]; then
+  COLOR_RED=$'\033[31m'
+else
+  COLOR_RED=""
+fi
+
+# Show a red notice if setup exits unexpectedly
+trap 'echo ""; echo "${COLOR_RED}Setup failed.${COLOR_RESET} Check the output above for details."; echo ""' ERR
+
 # ---------------------------------------------------------------------------
 # Parse arguments
 # ---------------------------------------------------------------------------
@@ -166,7 +176,9 @@ source "$SCRIPT_DIR/lib/repos_setup.sh"
 echo ""
 echo "= Trusted Dev Setup Complete ="
 echo ""
-echo "Next steps:"
+echo "${COLOR_GREEN}Setup finished successfully.${COLOR_RESET}"
+echo ""
+echo "${COLOR_YELLOW}Next steps:${COLOR_RESET}"
 echo "  1. Open a new terminal (or run: source ~/.zshrc)"
 echo "  2. Clone a project:  cd ~/Work && gh repo clone trusted/<repo-name>"
 echo "  3. Run project setup: cd <repo-name> && bin/setup"

@@ -31,7 +31,12 @@ fi
 
 fmt_header "CircleCI Authentication"
 
-if circleci diagnostic 2>&1 | grep -q "OK, got a token"; then
+# Capture diagnostic output into a variable to avoid pipe + pipefail issues.
+# With pipefail, a failing left-hand side poisons the whole pipeline even when
+# grep succeeds, which causes false negatives.
+circleci_diag="$(circleci diagnostic 2>&1 || true)"
+
+if echo "$circleci_diag" | grep -q "OK, got a token"; then
   fmt_ok "CircleCI CLI: already authenticated"
 else
   echo "  CircleCI CLI needs to be configured."
@@ -40,7 +45,8 @@ else
   echo ""
   circleci setup
 
-  if ! circleci diagnostic 2>&1 | grep -q "OK, got a token"; then
+  circleci_diag="$(circleci diagnostic 2>&1 || true)"
+  if ! echo "$circleci_diag" | grep -q "OK, got a token"; then
     echo ""
     echo "ERROR: CircleCI CLI authentication failed or was cancelled."
     echo "Setup cannot continue without CircleCI access."
