@@ -3,9 +3,17 @@
 # Private registry configuration for Bundler and Yarn.
 # Sourced by setup.sh — do not execute directly.
 # Requires: lib/common.sh, gh authenticated (with read:packages scope),
-#           op authenticated, bundle on PATH, yarn on PATH.
+#           op authenticated, Ruby + Node installed via mise.
 
 fmt_header "Private Registries"
+
+# ---------------------------------------------------------------------------
+# Ensure mise-managed tools (bundle, yarn) are available in this session.
+# mise activate may not have fully populated PATH with shims yet, so we
+# add the shims directory explicitly.
+# ---------------------------------------------------------------------------
+
+export PATH="$HOME/.local/share/mise/shims:$PATH"
 
 # ---------------------------------------------------------------------------
 # GitHub credentials (used by both Bundler and Yarn)
