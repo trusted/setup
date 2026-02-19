@@ -2,9 +2,14 @@
 
 Bootstraps a developer machine with the baseline tools required to work on Trusted projects.
 
+**Supported platforms:** MacOS · Ubuntu · Omarchy
+
 ## What it installs
 
-- **Homebrew** (macOS) / apt updates (Ubuntu) / pacman updates (Arch)
+- **package management** 
+  - homebrew for MacOS 
+  - apt updates for Ubuntu 
+  - pacman/yay updates for Omarchy
 - **git** — version control
 - **gh** — GitHub CLI (+ authenticates with GitHub)
 - **mise** — version manager for Ruby, Node, etc.
@@ -32,10 +37,27 @@ cd <project> && bin/setup
 
 ## Re-running
 
-The script is idempotent. Run it again at any time to ensure your tools are up to date and apply new migrations:
+The script is idempotent. Run it again at any time to ensure your tools are up to date and apply new migrations.
+
+Locally from the cloned repo at `~/Work/devsetup`:
+
+```bash
+bash ~/Work/devsetup/setup.sh
+```
+
+Via curl (fetches latest from GitHub):
 
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/devsetup/main/setup.sh)"
+```
+
+
+## Diagnosing your environment
+
+Run `doctor.sh` at any time to check that all expected tools are installed and no migrations are pending. It never changes anything — only reports:
+
+```bash
+bash ~/Work/devsetup/doctor.sh
 ```
 
 ## Migrations
@@ -45,21 +67,7 @@ One-time environment changes are tracked as migration scripts in `migrations/`. 
 To re-run a specific migration:
 
 ```bash
-./setup.sh --rerun <timestamp>
-```
-
-## Supported platforms
-
-- macOS (Homebrew)
-- Ubuntu / Debian (apt)
-- Omarchy (pacman/yay)
-
-## Diagnosing your environment
-
-Run `doctor.sh` at any time to check that all expected tools are installed and no migrations are pending. It never changes anything — only reports:
-
-```bash
-bash doctor.sh
+bash ~/Work/devsetup/setup.sh --rerun <timestamp>
 ```
 
 ## How it works

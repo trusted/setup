@@ -143,11 +143,29 @@ cd <project> && bin/setup
 ```
 devsetup/
 ├── setup.sh              # Main bootstrap script (bash, entry point)
+├── doctor.sh             # Read-only diagnostic script (verifies setup.sh outcomes)
 ├── lib/
-│   └── migrate.sh        # Migration runner (sourced by setup.sh)
+│   ├── common.sh         # Shared helpers: OS detection, cmd_exists, formatting
+│   ├── migrate.sh        # Migration runner (sourced by setup.sh)
+│   ├── packages_setup.sh # Package manager bootstrap (brew/apt/pacman)
+│   ├── git_setup.sh      # git and GitHub CLI installation + auth
+│   ├── mise_setup.sh     # mise and Ruby (global default) installation
+│   ├── 1password_setup.sh # 1Password CLI installation
+│   ├── build_setup.sh    # Build essentials (Xcode CLT / build-essential / base-devel)
+│   ├── docker_setup.sh   # Docker, Docker Compose, Colima installation
+│   ├── aws_setup.sh      # AWS CLI and AWS VPN Client installation
+│   ├── repos_setup.sh    # ~/Work directory and repository cloning
+│   ├── packages_doctor.sh # Doctor checks for each corresponding setup module
+│   ├── git_doctor.sh
+│   ├── mise_doctor.sh
+│   ├── 1password_doctor.sh
+│   ├── build_doctor.sh
+│   ├── docker_doctor.sh
+│   ├── aws_doctor.sh
+│   ├── repos_doctor.sh
+│   └── migrate_doctor.sh
 ├── migrations/           # Run-once transition scripts
 │   └── .gitkeep
-├── doctor.sh             # Read-only diagnostic script (verifies setup.sh outcomes)
 ├── .github/
 │   └── workflows/
 │       └── ci.yml        # GitHub Actions: shellcheck + Ubuntu setup + doctor

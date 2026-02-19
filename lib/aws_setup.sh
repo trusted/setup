@@ -19,7 +19,15 @@ else
       brew install awscli
       ;;
     ubuntu)
-      curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o /tmp/awscliv2.zip
+      # Ensure unzip is available (not always present on minimal Ubuntu installs)
+      if ! cmd_exists unzip; then
+        sudo apt-get install -y -qq unzip
+      fi
+      aws_arch="x86_64"
+      if [ "$(uname -m)" = "aarch64" ]; then
+        aws_arch="aarch64"
+      fi
+      curl -fsSL "https://awscli.amazonaws.com/awscli-exe-linux-${aws_arch}.zip" -o /tmp/awscliv2.zip
       unzip -qo /tmp/awscliv2.zip -d /tmp/aws-install
       sudo /tmp/aws-install/aws/install
       rm -rf /tmp/awscliv2.zip /tmp/aws-install
@@ -53,17 +61,19 @@ case "$OS" in
     fi
     ;;
   ubuntu)
-    if cmd_exists awsvpnclient; then
+    # AWS VPN Client is a GUI app installed to /opt/awsvpnclient (no PATH binary)
+    if [ -d "/opt/awsvpnclient" ]; then
       fmt_ok "AWS VPN Client already installed"
     else
       fmt_install "AWS VPN Client"
-      curl -fsSL "https://d20adtppz83p9s.cloudfront.net/GTK/latest/awsvpnclient_amd64.deb" -o /tmp/awsvpnclient.deb
+      vpn_arch="$(dpkg --print-architecture)"
+      curl -fsSL "https://d20adtppz83p9s.cloudfront.net/GTK/latest/awsvpnclient_${vpn_arch}.deb" -o /tmp/awsvpnclient.deb
       sudo apt-get install -y -qq /tmp/awsvpnclient.deb
       rm -f /tmp/awsvpnclient.deb
     fi
     ;;
   arch)
-    if cmd_exists awsvpnclient; then
+    if [ -d "/opt/awsvpnclient" ]; then
       fmt_ok "AWS VPN Client already installed"
     else
       fmt_install "AWS VPN Client"

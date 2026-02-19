@@ -18,7 +18,7 @@ case "$OS" in
     fi
     ;;
   ubuntu)
-    if dpkg -l build-essential > /dev/null 2>&1; then
+    if dpkg -s build-essential > /dev/null 2>&1; then
       fmt_ok "build-essential already installed"
     else
       fmt_install "build-essential"

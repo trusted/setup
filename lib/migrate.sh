@@ -33,7 +33,7 @@ run_migrations() {
 
     local filename
     filename=$(basename "$file")
-    local timestamp="${filename%.sh}"
+    local migration_name="${filename%.sh}"
 
     if [ -f "$MIGRATION_STATE_DIR/$filename" ]; then
       applied=$((applied + 1))
@@ -42,16 +42,16 @@ run_migrations() {
 
     pending=$((pending + 1))
 
-    echo "-> Running migration $timestamp ..."
+    echo "-> Running migration $migration_name ..."
 
     if bash "$file"; then
       touch "$MIGRATION_STATE_DIR/$filename"
-      echo "   Migration $timestamp completed."
+      echo "   Migration $migration_name completed."
     else
       echo ""
-      echo "ERROR: Migration $timestamp failed."
+      echo "ERROR: Migration $migration_name failed."
       echo "Fix the issue and re-run setup.sh."
-      echo "To retry just this migration: setup.sh --rerun $timestamp"
+      echo "To retry just this migration: setup.sh --rerun ${migration_name%%_*}"
       return 1
     fi
   done
@@ -90,14 +90,16 @@ rerun_migration() {
   # Remove the marker file if it exists
   rm -f "$MIGRATION_STATE_DIR/$filename"
 
-  echo "-> Re-running migration ${filename%.sh} ..."
+  local migration_name="${filename%.sh}"
+
+  echo "-> Re-running migration $migration_name ..."
 
   if bash "$filepath"; then
     touch "$MIGRATION_STATE_DIR/$filename"
-    echo "   Migration ${filename%.sh} completed."
+    echo "   Migration $migration_name completed."
   else
     echo ""
-    echo "ERROR: Migration ${filename%.sh} failed."
+    echo "ERROR: Migration $migration_name failed."
     return 1
   fi
 }

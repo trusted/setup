@@ -82,7 +82,7 @@ It does **NOT** install:
 
 ## Commands
 
-- `shellcheck -x setup.sh doctor.sh lib/migrate.sh` — Lint bash scripts
+- `shellcheck -x setup.sh doctor.sh lib/*.sh` — Lint bash scripts
 - `bash -n setup.sh` — Check for syntax errors without executing
 - `bash doctor.sh` — Run post-setup diagnostic checks
 - `date +%s` — Generate a migration timestamp

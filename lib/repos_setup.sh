@@ -18,7 +18,7 @@ clone_to_work() {
 
   if [ -d "$dir/.git" ]; then
     fmt_ok "$name already at $dir"
-  elif gh auth status > /dev/null 2>&1; then
+  else
     fmt_install "Cloning $name to $dir"
     gh repo clone "$repo" "$dir" -- --quiet
   fi

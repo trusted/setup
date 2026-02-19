@@ -25,7 +25,7 @@ case "$OS" in
     fi
     ;;
   ubuntu)
-    if dpkg -l build-essential > /dev/null 2>&1; then
+    if dpkg -s build-essential > /dev/null 2>&1; then
       check_pass "build-essential is installed"
     else
       check_fail "build-essential is not installed"

@@ -36,7 +36,8 @@ case "$OS" in
     fi
     ;;
   ubuntu|arch)
-    if cmd_exists awsvpnclient; then
+    # AWS VPN Client is a GUI app installed to /opt/awsvpnclient (no PATH binary)
+    if [ -d "/opt/awsvpnclient" ]; then
       check_pass "AWS VPN Client is installed"
     else
       check_fail "AWS VPN Client is not installed"

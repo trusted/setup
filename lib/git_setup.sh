@@ -59,11 +59,23 @@ fmt_header "GitHub Authentication"
 if gh auth status > /dev/null 2>&1; then
   fmt_ok "Already authenticated with GitHub"
 elif [ "${CI:-}" = "true" ]; then
-  echo "  Skipping interactive GitHub auth (CI environment detected)."
-  echo "  Set GH_TOKEN to authenticate gh in CI."
+  echo ""
+  echo "ERROR: Not authenticated with GitHub in CI."
+  echo "Set GH_TOKEN or GITHUB_TOKEN in your workflow environment."
+  exit 1
 else
   echo "  GitHub CLI needs to be authenticated."
   echo "  This will open a browser window for GitHub login."
   echo ""
   gh auth login --web --git-protocol https
+
+  # Verify authentication succeeded before continuing
+  if ! gh auth status > /dev/null 2>&1; then
+    echo ""
+    echo "ERROR: GitHub authentication failed or was cancelled."
+    echo "Setup cannot continue without GitHub access."
+    echo "Run this script again and complete the authentication step."
+    exit 1
+  fi
+  fmt_ok "Authenticated with GitHub"
 fi

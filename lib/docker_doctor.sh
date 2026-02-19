@@ -27,7 +27,7 @@ fi
 
 fmt_header "Docker Compose"
 
-if docker compose version > /dev/null 2>&1; then
+if cmd_exists docker && docker compose version > /dev/null 2>&1; then
   version_output="$(docker compose version --short 2>&1)"
   check_pass "Docker Compose is installed: $version_output"
 else
