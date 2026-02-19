@@ -541,8 +541,19 @@ case "$OS" in
     fi
     ;;
   arch)
-    echo "  AWS VPN Client is not available for Arch Linux."
-    echo "  Use OpenVPN or the AWS-provided OVPN config instead."
+    if cmd_exists awsvpnclient; then
+      fmt_ok "AWS VPN Client already installed"
+    else
+      fmt_install "AWS VPN Client"
+      if cmd_exists yay; then
+        yay -S --noconfirm awsvpnclient
+      elif cmd_exists paru; then
+        paru -S --noconfirm awsvpnclient
+      else
+        echo "  WARNING: No AUR helper found (yay/paru)."
+        echo "  Install awsvpnclient manually from AUR."
+      fi
+    fi
     ;;
 esac
 

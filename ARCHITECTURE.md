@@ -47,7 +47,7 @@ The bootstrap installs the following, in order:
 10. **Docker Compose**: Multi-container orchestration (`docker compose`)
 11. **Colima**: Container runtime for macOS (macOS only)
 12. **AWS CLI**: Amazon Web Services command-line interface (no auth configured)
-13. **AWS VPN Client**: VPN client for AWS Client VPN (macOS and Ubuntu only)
+13. **AWS VPN Client**: VPN client for AWS Client VPN
 
 ### What is NOT installed
 

@@ -15,7 +15,7 @@ Bootstraps a developer machine with the baseline tools required to work on Trust
 - **Docker Compose** — multi-container orchestration
 - **Colima** — container runtime for macOS (macOS only)
 - **AWS CLI** — Amazon Web Services CLI (no auth configured)
-- **AWS VPN Client** — VPN client for AWS (macOS and Ubuntu)
+- **AWS VPN Client** — VPN client for AWS
 
 ## Quick start
 
