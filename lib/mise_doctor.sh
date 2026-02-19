@@ -24,9 +24,10 @@ fi
 fmt_header "Ruby (via mise)"
 
 if cmd_exists mise; then
-  if mise which ruby > /dev/null 2>&1; then
+  ruby_path="$(mise which ruby 2>/dev/null)"
+  if [[ -n "$ruby_path" && -x "$ruby_path" ]]; then
     check_pass "Ruby is available via mise"
-    ruby_version="$(mise exec -- ruby --version 2>&1)"
+    ruby_version="$("$ruby_path" --version 2>&1)"
     if [[ "$ruby_version" == *"ruby"* ]]; then
       check_pass "Ruby executes and reports version: $ruby_version"
     else
@@ -46,9 +47,10 @@ fi
 fmt_header "Node.js (via mise)"
 
 if cmd_exists mise; then
-  if mise which node > /dev/null 2>&1; then
+  node_path="$(mise which node 2>/dev/null)"
+  if [[ -n "$node_path" && -x "$node_path" ]]; then
     check_pass "Node.js is available via mise"
-    node_version="$(mise exec -- node --version 2>&1)"
+    node_version="$("$node_path" --version 2>&1)"
     if [[ "$node_version" == v* ]]; then
       check_pass "Node.js executes and reports version: $node_version"
     else
