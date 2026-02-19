@@ -33,20 +33,25 @@ fi
 
 fmt_header "Private Registries (Yarn)"
 
-if cmd_exists yarn; then
+# Yarn Berry reads scope config from ~/.yarnrc.yml (written by registries_setup.sh).
+# We check the file directly rather than using `yarn config get` because Yarn
+# Classic (v1) does not understand npmScopes.
+YARNRC_FILE="$HOME/.yarnrc.yml"
+
+if [ -f "$YARNRC_FILE" ]; then
   # Check @trusted scope
-  if yarn config get npmScopes.trusted 2>/dev/null | grep -q "npm.pkg.github.com"; then
+  if grep -q "npm.pkg.github.com" "$YARNRC_FILE" 2>/dev/null; then
     check_pass "yarn: @trusted scope is configured (npm.pkg.github.com)"
   else
-    check_fail "yarn: @trusted scope is not configured"
+    check_fail "yarn: @trusted scope is not configured in $YARNRC_FILE"
   fi
 
   # Check @fortawesome scope
-  if yarn config get npmScopes.fortawesome 2>/dev/null | grep -q "npm.fontawesome.com"; then
+  if grep -q "npm.fontawesome.com" "$YARNRC_FILE" 2>/dev/null; then
     check_pass "yarn: @fortawesome scope is configured (npm.fontawesome.com)"
   else
-    check_fail "yarn: @fortawesome scope is not configured"
+    check_fail "yarn: @fortawesome scope is not configured in $YARNRC_FILE"
   fi
 else
-  check_fail "Cannot check Yarn registries — yarn is not installed"
+  check_fail "Yarn scope config not found at $YARNRC_FILE (run setup.sh)"
 fi

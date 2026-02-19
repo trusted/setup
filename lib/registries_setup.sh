@@ -65,15 +65,12 @@ bundle config set --global github.com "$gh_token" > /dev/null
 fmt_ok "bundler: github.com"
 
 # ---------------------------------------------------------------------------
-# Yarn: @trusted npm scope (GitHub Packages)
-# ---------------------------------------------------------------------------
-
-yarn config set --home npmScopes.trusted.npmRegistryServer https://npm.pkg.github.com > /dev/null 2>&1
-yarn config set --home npmScopes.trusted.npmAuthToken "$gh_token" > /dev/null 2>&1
-fmt_ok "yarn: @trusted (npm.pkg.github.com)"
-
-# ---------------------------------------------------------------------------
-# Yarn: @fortawesome npm scope (Font Awesome, key from 1Password)
+# Yarn: private npm scopes (@trusted, @fortawesome)
+#
+# Write directly to ~/.yarnrc.yml (Yarn Berry's home config). This avoids
+# depending on which yarn binary is on PATH — Yarn Classic (v1) does not
+# support the --home flag or npmScopes. Writing the YAML file works
+# regardless of the active yarn version.
 # ---------------------------------------------------------------------------
 
 fa_token="$(op item get --vault 'Team: Engineering' \
@@ -85,6 +82,21 @@ if [ -z "$fa_token" ]; then
   exit 1
 fi
 
-yarn config set --home npmScopes.fortawesome.npmRegistryServer https://npm.fontawesome.com/ > /dev/null 2>&1
-yarn config set --home npmScopes.fortawesome.npmAuthToken "$fa_token" > /dev/null 2>&1
+YARNRC_FILE="$HOME/.yarnrc.yml"
+
+# Build the npmScopes block. We overwrite the file each time to ensure
+# credentials stay current. Any pre-existing content that is NOT managed
+# by devsetup will be lost — this is intentional; ~/.yarnrc.yml is owned
+# by devsetup for scope configuration.
+cat > "$YARNRC_FILE" <<EOF
+npmScopes:
+  trusted:
+    npmRegistryServer: "https://npm.pkg.github.com"
+    npmAuthToken: "${gh_token}"
+  fortawesome:
+    npmRegistryServer: "https://npm.fontawesome.com/"
+    npmAuthToken: "${fa_token}"
+EOF
+
+fmt_ok "yarn: @trusted (npm.pkg.github.com)"
 fmt_ok "yarn: @fortawesome (npm.fontawesome.com)"
