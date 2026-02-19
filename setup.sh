@@ -21,20 +21,32 @@ set -euo pipefail
 if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
-  # Running via curl | bash — clone the repo to a temp location
-  DEVSETUP_CLONE_DIR="$HOME/.local/share/trusted/devsetup"
+  # Running via curl | bash — clone (or update) the repo at ~/Work/devsetup
+  DEVSETUP_CLONE_DIR="$HOME/Work/devsetup"
   DEVSETUP_REPO="${DEVSETUP_REPO:-trusted/devsetup}"
   DEVSETUP_REF="${DEVSETUP_REF:-main}"
 
-  echo "Fetching devsetup from github.com/$DEVSETUP_REPO ($DEVSETUP_REF)..."
-
   if [ -d "$DEVSETUP_CLONE_DIR/.git" ]; then
-    git -C "$DEVSETUP_CLONE_DIR" fetch origin "$DEVSETUP_REF" --quiet
-    git -C "$DEVSETUP_CLONE_DIR" checkout "$DEVSETUP_REF" --quiet
-    git -C "$DEVSETUP_CLONE_DIR" reset --hard "origin/$DEVSETUP_REF" --quiet 2>/dev/null || true
+    # Abort if there are uncommitted changes
+    if ! git -C "$DEVSETUP_CLONE_DIR" diff --quiet HEAD 2>/dev/null; then
+      echo "ERROR: $DEVSETUP_CLONE_DIR has uncommitted changes."
+      echo "Commit or stash them, then re-run setup."
+      exit 1
+    fi
+
+    # Abort if on the wrong branch
+    local_branch="$(git -C "$DEVSETUP_CLONE_DIR" branch --show-current)"
+    if [ "$local_branch" != "$DEVSETUP_REF" ]; then
+      echo "ERROR: $DEVSETUP_CLONE_DIR is on branch '$local_branch', expected '$DEVSETUP_REF'."
+      echo "Switch to $DEVSETUP_REF, then re-run setup."
+      exit 1
+    fi
+
+    echo "Updating devsetup from github.com/$DEVSETUP_REPO ($DEVSETUP_REF)..."
+    git -C "$DEVSETUP_CLONE_DIR" pull --ff-only --quiet
   else
-    rm -rf "$DEVSETUP_CLONE_DIR"
-    mkdir -p "$(dirname "$DEVSETUP_CLONE_DIR")"
+    echo "Cloning devsetup from github.com/$DEVSETUP_REPO ($DEVSETUP_REF)..."
+    mkdir -p "$HOME/Work"
     git clone "https://github.com/$DEVSETUP_REPO.git" "$DEVSETUP_CLONE_DIR" --quiet
     git -C "$DEVSETUP_CLONE_DIR" checkout "$DEVSETUP_REF" --quiet
   fi
@@ -589,7 +601,6 @@ clone_to_work() {
   fi
 }
 
-clone_to_work "trusted/devsetup" "devsetup"
 clone_to_work "trusted/docs" "docs"
 
 # ---------------------------------------------------------------------------
