@@ -6,29 +6,34 @@
 
 fmt_header "Private Registries (Bundler)"
 
-if cmd_exists bundle; then
+# Read ~/.bundle/config directly instead of using `bundle config get` because
+# Bundler creates/modifies the config file as a side effect of any config
+# command, violating the doctor's read-only contract.
+BUNDLE_CONFIG="$HOME/.bundle/config"
+
+if [ -f "$BUNDLE_CONFIG" ]; then
   # Check Sidekiq Enterprise (contribsys) credential
-  if bundle config get enterprise.contribsys.com 2>/dev/null | grep -q "Set for"; then
+  if grep -q "BUNDLE_ENTERPRISE__CONTRIBSYS__COM" "$BUNDLE_CONFIG" 2>/dev/null; then
     check_pass "bundler: enterprise.contribsys.com is configured"
   else
     check_fail "bundler: enterprise.contribsys.com is not configured"
   fi
 
   # Check GitHub Packages gem registry credential
-  if bundle config get rubygems.pkg.github.com 2>/dev/null | grep -q "Set for"; then
+  if grep -q "BUNDLE_RUBYGEMS__PKG__GITHUB__COM" "$BUNDLE_CONFIG" 2>/dev/null; then
     check_pass "bundler: rubygems.pkg.github.com is configured"
   else
     check_fail "bundler: rubygems.pkg.github.com is not configured"
   fi
 
   # Check GitHub git sources credential
-  if bundle config get github.com 2>/dev/null | grep -q "Set for"; then
+  if grep -q "BUNDLE_GITHUB__COM" "$BUNDLE_CONFIG" 2>/dev/null; then
     check_pass "bundler: github.com is configured"
   else
     check_fail "bundler: github.com is not configured"
   fi
 else
-  check_fail "Cannot check Bundler registries — bundle is not installed"
+  check_fail "Bundler config not found at $BUNDLE_CONFIG (run setup.sh)"
 fi
 
 fmt_header "Private Registries (Yarn)"
