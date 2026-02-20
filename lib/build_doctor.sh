@@ -23,6 +23,12 @@ case "$OS" in
     else
       check_fail "Xcode Command Line Tools are not installed"
     fi
+
+    if brew list libyaml > /dev/null 2>&1; then
+      check_pass "libyaml is installed"
+    else
+      check_fail "libyaml is not installed (required for Ruby)"
+    fi
     ;;
   ubuntu)
     if dpkg -s build-essential > /dev/null 2>&1; then
@@ -37,5 +43,6 @@ case "$OS" in
     else
       check_fail "base-devel is not installed"
     fi
+
     ;;
 esac

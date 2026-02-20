@@ -16,6 +16,14 @@ case "$OS" in
       xcode-select --install 2>/dev/null || true
       echo "  NOTE: A dialog may have opened. Complete the installation and re-run this script."
     fi
+
+    # libyaml is required for building Ruby from source
+    if brew list libyaml > /dev/null 2>&1; then
+      fmt_ok "libyaml already installed"
+    else
+      fmt_install "libyaml"
+      brew install libyaml
+    fi
     ;;
   ubuntu)
     if dpkg -s build-essential > /dev/null 2>&1; then
@@ -32,5 +40,6 @@ case "$OS" in
       fmt_install "base-devel"
       sudo pacman -S --noconfirm --needed base-devel
     fi
+
     ;;
 esac
