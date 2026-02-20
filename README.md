@@ -2,25 +2,26 @@
 
 Bootstraps a developer machine with the baseline tools required to work on Trusted projects.
 
-**Supported platforms:** MacOS · Ubuntu · Omarchy
+**Supported platforms:** macOS · Ubuntu · Omarchy
 
 ## What it installs
 
-- **package management** 
-  - homebrew for MacOS 
-  - apt updates for Ubuntu 
-  - pacman/yay updates for Omarchy
+- **Package management** — Homebrew (macOS), apt (Ubuntu), pacman/yay (Omarchy)
 - **git** — version control
 - **gh** — GitHub CLI (+ authenticates with GitHub)
 - **mise** — version manager for Ruby, Node, etc.
 - **Ruby** — latest stable via mise (global default for `bin/setup` scripts)
+- **Node.js** — LTS via mise (global default)
+- **Yarn** — via corepack (ships with Node.js)
 - **op** — 1Password CLI for secrets management
+- **CircleCI CLI** — CI/CD pipeline management
 - **Build essentials** — compilers and headers for native extensions
 - **Docker** — container runtime
 - **Docker Compose** — multi-container orchestration
 - **Colima** — container runtime for macOS (macOS only)
 - **AWS CLI** — Amazon Web Services CLI (no auth configured)
 - **AWS VPN Client** — VPN client for AWS
+- **Private registries** — Bundler and Yarn credentials for private packages
 
 ## Quick start
 

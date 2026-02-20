@@ -64,12 +64,7 @@ source "$SCRIPT_DIR/lib/common.sh"
 # shellcheck source=lib/migrate.sh
 source "$SCRIPT_DIR/lib/migrate.sh"
 
-# Red is only needed for the failure trap; green/yellow come from common.sh.
-if [ -t 1 ]; then
-  COLOR_RED=$'\033[31m'
-else
-  COLOR_RED=""
-fi
+# COLOR_RED, COLOR_GREEN, COLOR_YELLOW, and COLOR_RESET are provided by common.sh.
 
 # Show a red notice if setup exits unexpectedly
 trap 'echo ""; echo "${COLOR_RED}Setup failed.${COLOR_RESET} Check the output above for details."; echo ""' ERR

@@ -8,7 +8,7 @@
 
 case "$*" in
   *whoami*)
-    echo "ci-mock-user@trusted.dev"
+    echo "ci-mock-user@example.com"
     ;;
   *BUNDLE_ENTERPRISE__CONTRIBSYS__COM*)
     echo "ci-mock-contribsys-key"

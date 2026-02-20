@@ -31,13 +31,7 @@ source "$SCRIPT_DIR/lib/common.sh"
 # Doctor helpers
 # ---------------------------------------------------------------------------
 
-# COLOR_GREEN, COLOR_YELLOW, and COLOR_RESET are provided by common.sh.
-# Doctor additionally needs red for failures.
-if [ -t 1 ]; then
-  COLOR_RED=$'\033[31m'
-else
-  COLOR_RED=""
-fi
+# COLOR_RED, COLOR_GREEN, COLOR_YELLOW, and COLOR_RESET are provided by common.sh.
 
 FAIL_COUNT=0
 PASS_COUNT=0

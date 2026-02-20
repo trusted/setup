@@ -40,19 +40,22 @@ The bootstrap installs the following, in order:
 3. **gh**: GitHub CLI for repo cloning and authentication
 4. **gh auth**: Interactive GitHub authentication (`gh auth login`)
 5. **mise**: Version manager for Ruby, Node, and other runtimes
-6. **ruby** (latest stable, via mise): Global default so `bin/setup` scripts work
-7. **op**: 1Password CLI for secrets management
-8. **Build essentials**: Compilers and headers for native extensions
-9. **Docker**: Container runtime (Docker Engine on Linux, Docker CLI on macOS)
-10. **Docker Compose**: Multi-container orchestration (`docker compose`)
-11. **Colima**: Container runtime for macOS (macOS only)
-12. **AWS CLI**: Amazon Web Services command-line interface (no auth configured)
-13. **AWS VPN Client**: VPN client for AWS Client VPN
+6. **Ruby** (latest stable, via mise): Global default so `bin/setup` scripts work
+7. **Node.js** (LTS, via mise): Global default for build tooling and `bin/setup` scripts
+8. **Yarn** (via corepack): Enabled through Node.js's built-in corepack
+9. **op**: 1Password CLI for secrets management
+10. **CircleCI CLI**: CI/CD pipeline management and authentication
+11. **Build essentials**: Compilers and headers for native extensions
+12. **Docker**: Container runtime (Docker Engine on Linux, Docker CLI on macOS)
+13. **Docker Compose**: Multi-container orchestration (`docker compose`)
+14. **Colima**: Container runtime for macOS (macOS only)
+15. **AWS CLI**: Amazon Web Services command-line interface (no auth configured)
+16. **AWS VPN Client**: VPN client for AWS Client VPN
+17. **Private registries**: Bundler and Yarn credentials for private packages (via 1Password and GitHub)
 
 ### What is NOT installed
 
-- Node.js (left to individual projects via mise)
-- Project-specific Ruby versions (handled by mise + `.mise.toml` per project)
+- Project-specific Ruby or Node.js versions (handled by mise + `.mise.toml` per project)
 - Any project dependencies (gems, npm packages, databases)
 - AWS credentials or VPN profiles (configured separately)
 
@@ -145,33 +148,41 @@ devsetup/
 ├── setup.sh              # Main bootstrap script (bash, entry point)
 ├── doctor.sh             # Read-only diagnostic script (verifies setup.sh outcomes)
 ├── lib/
-│   ├── common.sh         # Shared helpers: OS detection, cmd_exists, formatting
-│   ├── migrate.sh        # Migration runner (sourced by setup.sh)
-│   ├── packages_setup.sh # Package manager bootstrap (brew/apt/pacman)
-│   ├── git_setup.sh      # git and GitHub CLI installation + auth
-│   ├── mise_setup.sh     # mise and Ruby (global default) installation
-│   ├── 1password_setup.sh # 1Password CLI installation
-│   ├── build_setup.sh    # Build essentials (Xcode CLT / build-essential / base-devel)
-│   ├── docker_setup.sh   # Docker, Docker Compose, Colima installation
-│   ├── aws_setup.sh      # AWS CLI and AWS VPN Client installation
-│   ├── repos_setup.sh    # ~/Work directory and repository cloning
-│   ├── packages_doctor.sh # Doctor checks for each corresponding setup module
+│   ├── common.sh           # Shared helpers: OS detection, cmd_exists, formatting
+│   ├── migrate.sh          # Migration runner (sourced by setup.sh)
+│   ├── packages_setup.sh   # Package manager bootstrap (brew/apt/pacman)
+│   ├── git_setup.sh        # git and GitHub CLI installation + auth
+│   ├── mise_setup.sh       # mise, Ruby, Node.js, and Yarn installation
+│   ├── 1password_setup.sh  # 1Password CLI installation
+│   ├── circleci_setup.sh   # CircleCI CLI installation + auth
+│   ├── build_setup.sh      # Build essentials (Xcode CLT / build-essential / base-devel)
+│   ├── docker_setup.sh     # Docker, Docker Compose, Colima installation
+│   ├── aws_setup.sh        # AWS CLI and AWS VPN Client installation
+│   ├── registries_setup.sh # Private registry credentials (Bundler + Yarn)
+│   ├── repos_setup.sh      # ~/Work directory and repository cloning
+│   ├── packages_doctor.sh  # Doctor checks for each corresponding setup module
 │   ├── git_doctor.sh
 │   ├── mise_doctor.sh
 │   ├── 1password_doctor.sh
+│   ├── circleci_doctor.sh
 │   ├── build_doctor.sh
 │   ├── docker_doctor.sh
 │   ├── aws_doctor.sh
+│   ├── registries_doctor.sh
 │   ├── repos_doctor.sh
 │   └── migrate_doctor.sh
 ├── migrations/           # Run-once transition scripts
-│   └── .gitkeep
+│   └── *.sh              # Named <timestamp>_<description>.sh
+├── ci/
+│   └── mock-op           # Mock 1Password CLI for CI environments
 ├── .github/
 │   └── workflows/
 │       └── ci.yml        # GitHub Actions: shellcheck + Ubuntu setup + doctor
 ├── ARCHITECTURE.md       # This file
 ├── README.md             # Brief usage instructions
 ├── AGENTS.md             # Guidelines for AI agents modifying this repo
+├── SECURITY.md           # Security policy and reporting
+├── LICENSE               # MIT License
 └── .gitignore
 ```
 
