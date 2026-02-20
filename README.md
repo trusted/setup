@@ -25,13 +25,18 @@ Bootstraps a developer machine with the baseline tools required to work on Trust
 
 ## Quick start
 
+Open your terminal and paste the following command. Popular options are Ghostty and iTerm2.
+
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/setup/main/setup.sh)"
 ```
 
-Then clone and set up any project:
+Follow the instructions closely as you'll need to execute steps along the way.
+
+Then get to your Work directory, clone, and set up any project:
 
 ```bash
+cd ~/Work
 gh repo clone trusted/<project>
 cd <project> && bin/setup
 ```
