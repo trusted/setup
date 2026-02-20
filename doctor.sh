@@ -28,6 +28,14 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/lib/common.sh"
 
 # ---------------------------------------------------------------------------
+# Ensure mise-managed tools (ruby, node, yarn, etc.) are visible.
+# In a non-interactive shell, mise may not be activated, so add the shims
+# directory to PATH explicitly. This is read-only — no files are modified.
+# ---------------------------------------------------------------------------
+
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
+# ---------------------------------------------------------------------------
 # Doctor helpers
 # ---------------------------------------------------------------------------
 
