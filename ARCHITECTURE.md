@@ -1,4 +1,4 @@
-# Trusted Dev Setup - Architecture
+# Trusted Setup - Architecture
 
 ## Problem
 
@@ -8,7 +8,7 @@ This is a chicken-and-egg problem: you need the repo cloned to run `bin/setup`, 
 
 ## Solution
 
-A centralized `trusted/devsetup` repository containing a bash bootstrap script (`setup.sh`) that prepares any developer machine with the baseline system tools required to clone and run any Trusted project's `bin/setup`.
+A centralized `trusted/setup` repository containing a bash bootstrap script (`setup.sh`) that prepares any developer machine with the baseline system tools required to clone and run any Trusted project's `bin/setup`.
 
 The script is invocable via `curl | bash` on a fresh machine (no prerequisites beyond bash and curl, which are present on all target platforms).
 
@@ -72,7 +72,7 @@ Migrations handle one-time transitions that are not naturally idempotent: removi
 Inspired by [Omarchy's migration system](https://github.com/basecamp/omarchy/blob/dev/bin/omarchy-migrate).
 
 - Migration scripts live in `migrations/` and are named `<timestamp>_<description>.sh`: e.g. `1740000000_remove_deprecated_tool.sh`
-- State is tracked in `~/.local/state/trusted/devsetup/migrations/` as empty marker files (one per completed migration)
+- State is tracked in `~/.local/state/trusted/setup/migrations/` as empty marker files (one per completed migration)
 - On each run of `setup.sh`, the migration runner:
   1. Scans `migrations/*.sh` sorted numerically
   2. Skips any migration whose marker file already exists
@@ -101,10 +101,10 @@ This removes the marker file for the given migration and re-executes it.
 
 ## State directory
 
-All local state is stored under `~/.local/state/trusted/devsetup/` (follows XDG Base Directory conventions):
+All local state is stored under `~/.local/state/trusted/setup/` (follows XDG Base Directory conventions):
 
 ```
-~/.local/state/trusted/devsetup/
+~/.local/state/trusted/setup/
 └── migrations/
     ├── 1740000000.sh    # marker: migration completed
     ├── 1740100000.sh
@@ -122,7 +122,7 @@ Options:
 
 Examples:
   # First-time setup (or re-run to update)
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/devsetup/main/setup.sh)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/setup/main/setup.sh)"
 
   # Re-run a specific migration
   ./setup.sh --rerun 1740000000
@@ -132,7 +132,7 @@ Examples:
 
 ```bash
 # 1. One-time system bootstrap
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/devsetup/main/setup.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/setup/main/setup.sh)"
 
 # 2. Clone any Trusted project
 gh repo clone trusted/<project>
@@ -144,7 +144,7 @@ cd <project> && bin/setup
 ## Repository structure
 
 ```
-devsetup/
+setup/
 ├── setup.sh              # Main bootstrap script (bash, entry point)
 ├── doctor.sh             # Read-only diagnostic script (verifies setup.sh outcomes)
 ├── lib/

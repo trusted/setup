@@ -7,7 +7,7 @@
 
 fmt_header "Migrations"
 
-MIGRATION_STATE_DIR="$HOME/.local/state/trusted/devsetup/migrations"
+MIGRATION_STATE_DIR="$HOME/.local/state/trusted/setup/migrations"
 
 if [ -d "$MIGRATION_STATE_DIR" ]; then
   check_pass "Migration state directory exists"

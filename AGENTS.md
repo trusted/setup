@@ -1,6 +1,6 @@
 # AGENTS.md
 
-Guidance for AI coding agents working on the Trusted Dev Setup repository.
+Guidance for AI coding agents working on the Trusted Setup repository.
 
 ## Overview
 
@@ -9,7 +9,7 @@ This repo contains a bash bootstrap script that prepares developer machines with
 ## Architecture
 
 - `setup.sh` — Main entry point. Bash only. Detects OS, installs tools idempotently, then runs pending migrations.
-- `lib/migrate.sh` — Migration runner. Sourced by `setup.sh`. Tracks state in `~/.local/state/trusted/devsetup/migrations/`.
+- `lib/migrate.sh` — Migration runner. Sourced by `setup.sh`. Tracks state in `~/.local/state/trusted/setup/migrations/`.
 - `migrations/*.sh` — Run-once bash scripts for environment transitions. Named by Unix timestamp.
 
 ## Key rules
@@ -85,7 +85,7 @@ It does **NOT** install:
 
 ## Commands
 
-- `shellcheck -x setup.sh doctor.sh lib/*.sh ci/mock-op` — Lint bash scripts
+- `shellcheck -x setup.sh doctor.sh lib/*.sh migrations/*.sh ci/mock-op` — Lint bash scripts
 - `bash -n setup.sh` — Check for syntax errors without executing
 - `bash doctor.sh` — Run post-setup diagnostic checks
 - `date +%s` — Generate a migration timestamp

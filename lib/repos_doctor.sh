@@ -12,16 +12,16 @@ else
   check_fail "$HOME/Work directory does not exist"
 fi
 
-if [ -d "$HOME/Work/devsetup/.git" ]; then
-  check_pass "devsetup is cloned to $HOME/Work/devsetup"
+if [ -d "$HOME/Work/setup/.git" ]; then
+  check_pass "setup is cloned to $HOME/Work/setup"
 else
-  check_warn "devsetup not found at $HOME/Work/devsetup (ok if running from another location)"
+  check_warn "setup not found at $HOME/Work/setup (ok if running from another location)"
 fi
 
-if [ -f "$HOME/Work/devsetup/setup.sh" ]; then
-  check_pass "$HOME/Work/devsetup contains setup.sh"
+if [ -f "$HOME/Work/setup/setup.sh" ]; then
+  check_pass "$HOME/Work/setup contains setup.sh"
 else
-  check_warn "setup.sh not found in $HOME/Work/devsetup"
+  check_warn "setup.sh not found in $HOME/Work/setup"
 fi
 
 if [ -d "$HOME/Work/docs/.git" ]; then

@@ -1,12 +1,12 @@
 #!/bin/bash
 #
-# Migration runner for Trusted Dev Setup.
+# Migration runner for Trusted Setup.
 # Sourced by setup.sh — do not execute directly.
 #
 # Inspired by Omarchy's migration system:
 # https://github.com/basecamp/omarchy/blob/dev/bin/omarchy-migrate
 
-MIGRATION_STATE_DIR="$HOME/.local/state/trusted/devsetup/migrations"
+MIGRATION_STATE_DIR="$HOME/.local/state/trusted/setup/migrations"
 
 run_migrations() {
   local script_dir="$1"

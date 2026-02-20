@@ -86,8 +86,8 @@ YARNRC_FILE="$HOME/.yarnrc.yml"
 
 # Build the npmScopes block. We overwrite the file each time to ensure
 # credentials stay current. Any pre-existing content that is NOT managed
-# by devsetup will be lost — this is intentional; ~/.yarnrc.yml is owned
-# by devsetup for scope configuration.
+# by setup will be lost — this is intentional; ~/.yarnrc.yml is owned
+# by setup for scope configuration.
 cat > "$YARNRC_FILE" <<EOF
 npmScopes:
   trusted:

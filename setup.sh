@@ -1,13 +1,13 @@
 #!/bin/bash
 #
-# Trusted Dev Setup
+# Trusted Setup
 #
 # Bootstraps a developer machine with the baseline tools required to clone
 # and run any Trusted project's bin/setup script.
 #
 # Usage:
 #   # First-time setup or update
-#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/devsetup/main/setup.sh)"
+#   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/setup/main/setup.sh)"
 #
 #   # Re-run a specific migration
 #   ./setup.sh --rerun <timestamp>
@@ -21,37 +21,37 @@ set -euo pipefail
 if [ -n "${BASH_SOURCE[0]:-}" ] && [ -f "${BASH_SOURCE[0]}" ]; then
   SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 else
-  # Running via curl | bash — clone (or update) the repo at ~/Work/devsetup
-  DEVSETUP_CLONE_DIR="$HOME/Work/devsetup"
-  DEVSETUP_REPO="${DEVSETUP_REPO:-trusted/devsetup}"
-  DEVSETUP_REF="${DEVSETUP_REF:-main}"
+  # Running via curl | bash — clone (or update) the repo at ~/Work/setup
+  SETUP_CLONE_DIR="$HOME/Work/setup"
+  SETUP_REPO="${SETUP_REPO:-trusted/setup}"
+  SETUP_REF="${SETUP_REF:-main}"
 
-  if [ -d "$DEVSETUP_CLONE_DIR/.git" ]; then
+  if [ -d "$SETUP_CLONE_DIR/.git" ]; then
     # Abort if there are uncommitted changes
-    if ! git -C "$DEVSETUP_CLONE_DIR" diff --quiet HEAD 2>/dev/null; then
-      echo "ERROR: $DEVSETUP_CLONE_DIR has uncommitted changes."
+    if ! git -C "$SETUP_CLONE_DIR" diff --quiet HEAD 2>/dev/null; then
+      echo "ERROR: $SETUP_CLONE_DIR has uncommitted changes."
       echo "Commit or stash them, then re-run setup."
       exit 1
     fi
 
     # Abort if on the wrong branch
-    local_branch="$(git -C "$DEVSETUP_CLONE_DIR" branch --show-current)"
-    if [ "$local_branch" != "$DEVSETUP_REF" ]; then
-      echo "ERROR: $DEVSETUP_CLONE_DIR is on branch '$local_branch', expected '$DEVSETUP_REF'."
-      echo "Switch to $DEVSETUP_REF, then re-run setup."
+    local_branch="$(git -C "$SETUP_CLONE_DIR" branch --show-current)"
+    if [ "$local_branch" != "$SETUP_REF" ]; then
+      echo "ERROR: $SETUP_CLONE_DIR is on branch '$local_branch', expected '$SETUP_REF'."
+      echo "Switch to $SETUP_REF, then re-run setup."
       exit 1
     fi
 
-    echo "Updating devsetup from github.com/$DEVSETUP_REPO ($DEVSETUP_REF)..."
-    git -C "$DEVSETUP_CLONE_DIR" pull --ff-only --quiet
+    echo "Updating setup from github.com/$SETUP_REPO ($SETUP_REF)..."
+    git -C "$SETUP_CLONE_DIR" pull --ff-only --quiet
   else
-    echo "Cloning devsetup from github.com/$DEVSETUP_REPO ($DEVSETUP_REF)..."
+    echo "Cloning setup from github.com/$SETUP_REPO ($SETUP_REF)..."
     mkdir -p "$HOME/Work"
-    git clone "https://github.com/$DEVSETUP_REPO.git" "$DEVSETUP_CLONE_DIR" --quiet
-    git -C "$DEVSETUP_CLONE_DIR" checkout "$DEVSETUP_REF" --quiet
+    git clone "https://github.com/$SETUP_REPO.git" "$SETUP_CLONE_DIR" --quiet
+    git -C "$SETUP_CLONE_DIR" checkout "$SETUP_REF" --quiet
   fi
 
-  SCRIPT_DIR="$DEVSETUP_CLONE_DIR"
+  SCRIPT_DIR="$SETUP_CLONE_DIR"
 fi
 
 # ---------------------------------------------------------------------------
@@ -89,7 +89,7 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --help|-h)
-      echo "Trusted Dev Setup"
+      echo "Trusted Setup"
       echo ""
       echo "Usage: setup.sh [OPTIONS]"
       echo ""
@@ -117,7 +117,7 @@ fi
 # ---------------------------------------------------------------------------
 
 echo ""
-echo "= Trusted Dev Setup ="
+echo "= Trusted Setup ="
 echo ""
 echo "  Platform: $OS"
 echo ""
@@ -169,7 +169,7 @@ source "$SCRIPT_DIR/lib/repos_setup.sh"
 # ---------------------------------------------------------------------------
 
 echo ""
-echo "= Trusted Dev Setup Complete ="
+echo "= Trusted Setup Complete ="
 echo ""
 echo "${COLOR_GREEN}Setup finished successfully.${COLOR_RESET}"
 echo ""

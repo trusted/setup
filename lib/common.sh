@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Shared helpers for Trusted Dev Setup.
+# Shared helpers for Trusted Setup.
 # Sourced by setup.sh — do not execute directly.
 
 # ---------------------------------------------------------------------------

@@ -1,4 +1,4 @@
-# Trusted Dev Setup
+# Trusted Setup
 
 Bootstraps a developer machine with the baseline tools required to work on Trusted projects.
 
@@ -26,7 +26,7 @@ Bootstraps a developer machine with the baseline tools required to work on Trust
 ## Quick start
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/devsetup/main/setup.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/setup/main/setup.sh)"
 ```
 
 Then clone and set up any project:
@@ -40,16 +40,16 @@ cd <project> && bin/setup
 
 The script is idempotent. Run it again at any time to ensure your tools are up to date and apply new migrations.
 
-Locally from the cloned repo at `~/Work/devsetup`:
+Locally from the cloned repo at `~/Work/setup`:
 
 ```bash
-bash ~/Work/devsetup/setup.sh
+bash ~/Work/setup/setup.sh
 ```
 
 Via curl (fetches latest from GitHub):
 
 ```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/devsetup/main/setup.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/trusted/setup/main/setup.sh)"
 ```
 
 
@@ -58,7 +58,7 @@ Via curl (fetches latest from GitHub):
 Run `doctor.sh` at any time to check that all expected tools are installed and no migrations are pending. It never changes anything — only reports:
 
 ```bash
-bash ~/Work/devsetup/doctor.sh
+bash ~/Work/setup/doctor.sh
 ```
 
 ## Migrations
@@ -68,7 +68,7 @@ One-time environment changes are tracked as migration scripts in `migrations/`. 
 To re-run a specific migration:
 
 ```bash
-bash ~/Work/devsetup/setup.sh --rerun <timestamp>
+bash ~/Work/setup/setup.sh --rerun <timestamp>
 ```
 
 ## How it works

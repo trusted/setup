@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Trusted Dev Setup — Doctor
+# Trusted Setup — Doctor
 #
 # Read-only diagnostic script that verifies all tools and configuration
 # installed by setup.sh are present and working. Never modifies anything.
@@ -69,7 +69,7 @@ check_cmd() {
 # ---------------------------------------------------------------------------
 
 echo ""
-echo "= Trusted Dev Setup Doctor ="
+echo "= Trusted Setup Doctor ="
 echo ""
 echo "  Platform: $OS"
 echo ""
