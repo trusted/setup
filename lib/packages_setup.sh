@@ -8,6 +8,16 @@ fmt_header "Package Manager"
 
 case "$OS" in
   macos)
+    # Activate Homebrew for this session if it exists but isn't on PATH yet.
+    # This covers re-runs in the same terminal before the shell RC is sourced.
+    if ! cmd_exists brew; then
+      if [ -f /opt/homebrew/bin/brew ]; then
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+      elif [ -f /usr/local/bin/brew ]; then
+        eval "$(/usr/local/bin/brew shellenv)"
+      fi
+    fi
+
     if cmd_exists brew; then
       fmt_ok "Homebrew already installed"
     else

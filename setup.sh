@@ -128,6 +128,9 @@ source "$SCRIPT_DIR/lib/packages_setup.sh"
 # shellcheck source=lib/git_setup.sh
 source "$SCRIPT_DIR/lib/git_setup.sh"
 
+# shellcheck source=lib/build_setup.sh
+source "$SCRIPT_DIR/lib/build_setup.sh"
+
 # shellcheck source=lib/mise_setup.sh
 source "$SCRIPT_DIR/lib/mise_setup.sh"
 
@@ -136,9 +139,6 @@ source "$SCRIPT_DIR/lib/1password_setup.sh"
 
 # shellcheck source=lib/circleci_setup.sh
 source "$SCRIPT_DIR/lib/circleci_setup.sh"
-
-# shellcheck source=lib/build_setup.sh
-source "$SCRIPT_DIR/lib/build_setup.sh"
 
 # shellcheck source=lib/docker_setup.sh
 source "$SCRIPT_DIR/lib/docker_setup.sh"
