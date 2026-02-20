@@ -31,6 +31,23 @@ case "$OS" in
         eval "$(/usr/local/bin/brew shellenv)"
       fi
     fi
+
+    # Ensure Homebrew activation is persisted in ~/.zshrc
+    if cmd_exists brew; then
+      if [ ! -f "$HOME/.zshrc" ]; then
+        touch "$HOME/.zshrc"
+      fi
+
+      if ! grep -qF "brew shellenv" "$HOME/.zshrc"; then
+        {
+          echo ""
+          echo "# Homebrew"
+          # shellcheck disable=SC2016 # Intentionally single-quoted: written literally to RC file
+          echo 'eval "$(brew shellenv)"'
+        } >> "$HOME/.zshrc"
+        echo "  Added Homebrew activation to ~/.zshrc"
+      fi
+    fi
     ;;
   ubuntu)
     fmt_install "Updating apt package index"

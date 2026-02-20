@@ -20,39 +20,19 @@ else
   export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Ensure mise is activated in shell RC files
-activate_mise_in_shell() {
-  local rc_file="$1"
-  # shellcheck disable=SC2016 # Intentionally single-quoted: written literally to RC file
-  local activation_line='eval "$(mise activate)"'
-
-  if [ -f "$rc_file" ]; then
-    if ! grep -qF "mise activate" "$rc_file"; then
-      {
-        echo ""
-        echo "# mise version manager"
-        echo "$activation_line"
-      } >> "$rc_file"
-      echo "  Added mise activation to $rc_file"
-    fi
-  fi
-}
-
-# Detect which shell RC files exist and activate mise in them
-if [ -f "$HOME/.zshrc" ]; then
-  activate_mise_in_shell "$HOME/.zshrc"
+# Ensure mise is activated in ~/.zshrc
+if [ ! -f "$HOME/.zshrc" ]; then
+  touch "$HOME/.zshrc"
 fi
 
-if [ -f "$HOME/.bashrc" ]; then
-  activate_mise_in_shell "$HOME/.bashrc"
-fi
-
-# If neither exists, create .bashrc with mise activation (Linux default)
-if [ ! -f "$HOME/.zshrc" ] && [ ! -f "$HOME/.bashrc" ]; then
-  echo '# mise version manager' > "$HOME/.bashrc"
-  # shellcheck disable=SC2016 # Intentionally single-quoted: written literally to RC file
-  echo 'eval "$(mise activate)"' >> "$HOME/.bashrc"
-  echo "  Created $HOME/.bashrc with mise activation"
+if ! grep -qF "mise activate" "$HOME/.zshrc"; then
+  {
+    echo ""
+    echo "# mise version manager"
+    # shellcheck disable=SC2016 # Intentionally single-quoted: written literally to RC file
+    echo 'eval "$(mise activate)"'
+  } >> "$HOME/.zshrc"
+  echo "  Added mise activation to ~/.zshrc"
 fi
 
 # Activate mise for this session
